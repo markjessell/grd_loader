@@ -220,7 +220,7 @@ class GrdLoader:
                 epsg=extract_proj_str(file_path+'.xml')
                 if(epsg== None):
                     epsg=4326
-                    self.iface.messageBar().pushMessage("No CRS Read found in XML, default to 4326", level=Qgis.Warning, duration=15)
+                    self.iface.messageBar().pushMessage("No CRS found in XML, default to 4326", level=Qgis.Warning, duration=15)
                 else:
                     self.iface.messageBar().pushMessage("CRS Read from XML as "+epsg+", manual input ignored", level=Qgis.Info, duration=15)
             else:
@@ -238,35 +238,38 @@ class GrdLoader:
                 #header: header data (dict)
                 #grid: grid data (2D array of float32)
                 
-            if(file_path !=''):    
-                grid,header,Gdata_type=load_oasis_montaj_grid(file_path)
-                print(header)
-                                
-                path,name=ntpath.split(file_path)
-                fn='/vsimem/'+name[:-4]+'.tif'
+            if(file_path !=''): 
+                if(not os.path.exists(file_path)):
+                    self.iface.messageBar().pushMessage("File: "+file_path+" not found", level=Qgis.Warning, duration=3)
+                else:    
+                    grid,header,Gdata_type=load_oasis_montaj_grid(file_path)
+                    print(header)
+                                    
+                    path,name=ntpath.split(file_path)
+                    fn='/vsimem/'+name[:-4]+'.tif'
 
-                driver=gdal.GetDriverByName('GTiff')
-                if(header["ordering"]==1):
-                    ds = driver.Create(fn,xsize=header["shape_e"],ysize=header["shape_v"],bands=1,eType=Gdata_type)
-                else:
-                    ds = driver.Create(fn,xsize=header["shape_v"],ysize=header["shape_e"],bands=1,eType=Gdata_type)
+                    driver=gdal.GetDriverByName('GTiff')
+                    if(header["ordering"]==1):
+                        ds = driver.Create(fn,xsize=header["shape_e"],ysize=header["shape_v"],bands=1,eType=Gdata_type)
+                    else:
+                        ds = driver.Create(fn,xsize=header["shape_v"],ysize=header["shape_e"],bands=1,eType=Gdata_type)
 
-                ds.GetRasterBand(1).WriteArray(grid)
-                geot=[header["x_origin"]-(header["spacing_e"]/2),
-                    header["spacing_e"],
-                    0,
-                    header["y_origin"]-(header["spacing_v"]/2),
-                    0,
-                    header["spacing_e"],
-                    ]
-                ds.SetGeoTransform(geot)
-                srs=osr.SpatialReference()
+                    ds.GetRasterBand(1).WriteArray(grid)
+                    geot=[header["x_origin"]-(header["spacing_e"]/2),
+                        header["spacing_e"],
+                        0,
+                        header["y_origin"]-(header["spacing_v"]/2),
+                        0,
+                        header["spacing_e"],
+                        ]
+                    ds.SetGeoTransform(geot)
+                    srs=osr.SpatialReference()
 
-                ds.SetProjection(srs.ExportToWkt())
-                ds=None
-                rlayer=self.iface.addRasterLayer(fn)
-                rlayer.setCrs( QgsCoordinateReferenceSystem('EPSG:'+str(epsg) ))
-                self.iface.messageBar().pushMessage("GRD file loaded as layer in memory, use export to save as file", level=Qgis.Success, duration=15)
+                    ds.SetProjection(srs.ExportToWkt())
+                    ds=None
+                    rlayer=self.iface.addRasterLayer(fn)
+                    rlayer.setCrs( QgsCoordinateReferenceSystem('EPSG:'+str(epsg) ))
+                    self.iface.messageBar().pushMessage("GRD file loaded as layer in memory, use export to save as file", level=Qgis.Success, duration=5)
 
             else:
                 self.iface.messageBar().pushMessage("You need to select a file first", level=Qgis.Warning, duration=3)
