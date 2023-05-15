@@ -1,6 +1,6 @@
 # grd_loader 0.1   
 
-Plugin to load a geosoft GRD format file as a temporary layer QGIS    
+Plugin to load a geosoft GRD format file as a temporary QGIS raster layer    
    
 ## Install   
 
