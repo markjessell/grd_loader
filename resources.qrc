@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/plugins/GRD_Loader" >
+        <file>icon.png</file>
+    </qresource>
+</RCC>
