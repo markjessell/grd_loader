@@ -4,7 +4,7 @@ Plugin to load a Geosoft(c) GRD format file as a temporary QGIS raster layer
    
 ## Install   
 
-Save repository to disk and zip resulting directory. Use QGIS Plugin Manager to load directly from resulting zip file.
+Save repository to disk as a zip file. Use QGIS Plugin Manager to load directly from zip file.
 
 ### Usage   
 
