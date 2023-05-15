@@ -8,9 +8,10 @@
 # https://github.com/Loop3D/geosoft_grid copyrighted by Loop3D and released
 # under the MIT License.
 
-# Modified by Mark Jessell to remove xarray dependence to make QGIS plugin install less fussy
-# added GDALDataType Enums
-# extract_proj_str changed to look for wellknown_epsg instead of projection
+# Modified by Mark Jessell to:
+#    remove xarray dependence to make QGIS plugin install less fussy
+#    added GDALDataType Enums needed by gdal driver.Create()
+#    extract_proj_str() changed to look for "wellknown_epsg" instead of "projection"
 
 """
 Function to read Oasis Montaj© .grd file

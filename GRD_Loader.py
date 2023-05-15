@@ -240,14 +240,17 @@ class GrdLoader:
                 
             if(file_path !=''):    
                 grid,header,Gdata_type=load_oasis_montaj_grid(file_path)
-
-                header['PROJ']=epsg # could read from xml if present, info is stored in wellknown_epsg
+                print(header)
                                 
                 path,name=ntpath.split(file_path)
                 fn='/vsimem/'+name[:-4]+'.tif'
 
                 driver=gdal.GetDriverByName('GTiff')
-                ds = driver.Create(fn,xsize=header["shape_e"],ysize=header["shape_v"],bands=1,eType=Gdata_type)
+                if(header["ordering"]==1):
+                    ds = driver.Create(fn,xsize=header["shape_e"],ysize=header["shape_v"],bands=1,eType=Gdata_type)
+                else:
+                    ds = driver.Create(fn,xsize=header["shape_v"],ysize=header["shape_e"],bands=1,eType=Gdata_type)
+
                 ds.GetRasterBand(1).WriteArray(grid)
                 geot=[header["x_origin"]-(header["spacing_e"]/2),
                     header["spacing_e"],
