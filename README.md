@@ -8,7 +8,7 @@ Save repository to disk and zip resulting directory. Use QGIS Plugin Manager to 
 
 ### Usage   
 
-Once the QGIS Plugin is installed, click on the ![grd_icon]('icon.png') icon. Form here you can search for a grd format file and load it. If this GRD has an associated xml file you can then just click on the OK button to load the grid. If no XML is present, manually enter the EPSG code (e.g. 4326 = WGS 84 Lat/Long), then cick on the OK button    
+Once the QGIS Plugin is installed, click on the ![grd_icon](icon.png) icon. Form here you can search for a grd format file and load it. If this GRD has an associated xml file you can then just click on the OK button to load the grid. If no XML is present, manually enter the EPSG code (e.g. 4326 = WGS 84 Lat/Long), then cick on the OK button    
 
 ### Credits    
 Plugin construction-Mark Jessell using QGIS Plugin Builder Plugin    
